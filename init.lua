@@ -69,6 +69,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- hopefully disables diagnostic warnings
+vim.diagnostic.enable(false)
+
 -- [[ Basic Keymaps ]]
 
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -163,24 +166,44 @@ require('lazy').setup({
     -- use opts = {} for passing setup options
     -- this is equivalent to setup({}) function
   },
-  -- Preview Markdown docs
+  -- harpoon from coding with sphere
   {
-    'iamcco/markdown-preview.nvim',
-    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
-    build = 'cd app; yarn install',
-    init = function()
-      vim.g.mkdp_filetypes = { 'markdown' }
-      vim.g.mkdp_browser = '/Applications/Brave Browser.app'
-    end,
-    ft = { 'markdown' },
-    config = function()
-      vim.keymap.set('n', '<leader>mdn', ':MarkdownPreview<CR>')
-      vim.keymap.set('n', '<leader>mds', ':MarkdownPreviewStop<CR>')
+	"ThePrimeagen/harpoon",
+	branch = "harpoon2",
+	dependencies = { "nvim-lua/plenary.nvim" },
+	config = function()
+		local harpoon = require("harpoon")
 
-      vim.g.mkdp_markdown_css = 'C:/users/micha/appdata/local/nvim/md.css'
-      vim.g.mkdp_highlight_css = 'C:/users/micha/appdata/local/nvim/mdhl.css'
-    end,
-  },
+		-- REQUIRED
+		harpoon:setup()
+		-- REQUIRED
+
+		vim.keymap.set("n", "<leader>a", function()
+			harpoon:list():add()
+		end)
+		vim.keymap.set("n", "<C-e>", function()
+			harpoon.ui:toggle_quick_menu(harpoon:list())
+		end)
+	end,
+},
+  -- Preview Markdown docs
+  -- {
+  --   'iamcco/markdown-preview.nvim',
+  --   cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+  --   build = 'cd app; yarn install',
+  --   init = function()
+  --     vim.g.mkdp_filetypes = { 'markdown' }
+  --     vim.g.mkdp_browser = '/Applications/Brave Browser.app'
+  --   end,
+  --   ft = { 'markdown' },
+  --   config = function()
+  --     vim.keymap.set('n', '<leader>mdn', ':MarkdownPreview<CR>')
+  --     vim.keymap.set('n', '<leader>mds', ':MarkdownPreviewStop<CR>')
+  --
+  --     vim.g.mkdp_markdown_css = 'C:/users/micha/appdata/local/nvim/md.css'
+  --     vim.g.mkdp_highlight_css = 'C:/users/micha/appdata/local/nvim/mdhl.css'
+  --   end,
+  -- },
   {
     {
       'abecodes/tabout.nvim',
@@ -226,17 +249,48 @@ require('lazy').setup({
   },
   -- Remove MD013 warnings
   {
-    {
-      'mfussenegger/nvim-lint',
-      opts = {
-        linters = {
-          markdownlint = {
-            args = { '--disable', 'MD013', 'MD012', '--' },
-          },
-        },
+    'nvim-lspconfig',
+    opts = {
+      diagnostics = {
+        virtual_text = false,
+        signs = false,
       },
     },
   },
+  -- {
+  --   'mfussenegger/nvim-lint',
+  --   optional = true,
+  --   opts = {
+  --     linters = {
+  --       ['markdownlint-cli2'] = {
+  --         args = { '--config', '/home/matthewkennedy/.markdownlint-cli2.yaml', '--' },
+  --       },
+  --     },
+  --   },
+  -- },
+
+  -- No worky worky
+  -- {
+  --   'mfussenegger/nvim-lint',
+  --
+  --   opts = {
+  --     linters = {
+  --       -- This does nothing
+  --       markdown = {
+  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
+  --       },
+  --       -- This does nothing
+  --       markdownlint = {
+  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
+  --       },
+  --       -- This stops _all_ linting from running on markdown.
+  --       ['markdownlint-cli2'] = {
+  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
+  --       },
+  --     },
+  --   },
+  -- },
+
   -- Obsidian nvim
   {
     'epwalsh/obsidian.nvim',
