@@ -168,24 +168,24 @@ require('lazy').setup({
   },
   -- harpoon from coding with sphere
   {
-	"ThePrimeagen/harpoon",
-	branch = "harpoon2",
-	dependencies = { "nvim-lua/plenary.nvim" },
-	config = function()
-		local harpoon = require("harpoon")
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local harpoon = require 'harpoon'
 
-		-- REQUIRED
-		harpoon:setup()
-		-- REQUIRED
+      -- REQUIRED
+      harpoon:setup()
+      -- REQUIRED
 
-		vim.keymap.set("n", "<leader>a", function()
-			harpoon:list():add()
-		end)
-		vim.keymap.set("n", "<C-e>", function()
-			harpoon.ui:toggle_quick_menu(harpoon:list())
-		end)
-	end,
-},
+      vim.keymap.set('n', '<leader>a', function()
+        harpoon:list():add()
+      end)
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+    end,
+  },
   -- Preview Markdown docs
   -- {
   --   'iamcco/markdown-preview.nvim',
@@ -316,7 +316,7 @@ require('lazy').setup({
       workspaces = {
         {
           name = 'personal',
-          path = '/Users/matthewkennedy/Obsidian Vault Local/Matthew Local Vault/remote/',
+          path = '~/Documents/Obsidian Local Vault/',
         },
         -- {
         --   name = 'work',
@@ -340,7 +340,21 @@ require('lazy').setup({
     config = function()
       require('zen-mode').setup {
         window = {
+          width = 120,
+        },
+      }
+      vim.keymap.set('n', '<leader>zz', ':ZenMode<CR>')
+    end,
+  },
+  {
+    'folke/zen-mode.nvim',
+    opts = {},
+    config = function()
+      require('zen-mode').setup {
+        window = {
           width = 83,
+          transparent = true,
+          -- width = 1.00,
         },
       }
       vim.keymap.set('n', '<leader>zz', ':ZenMode<CR>')
@@ -891,7 +905,7 @@ require('lazy').setup({
         [[ ⣿⣿⠏⠁⢀⡇⠀⠀⠀⠀⠀⠀⡄⠀⠀⠀⠘⡏⣷⣵⡻⠃⠄⢴⣆⠀⠀⠀⠀⠀⠀⠀⠰⠀⣆⣷⣿ ]],
         [[ ⣿⡿⣻⠗⠀⢠⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⢠⣤⣄⢰⣶⢯⣤⡈⠋⠀⠀⠀⠀⠀⠀⠀⠀⠆⠀⣿⣼ ]],
       }
-
+      -- alpha dashboard home
       dashboard.section.buttons.val = {
         dashboard.button('e', '  > New file', ':ene <BAR> startinsert <CR>'),
         dashboard.button('n', '  > Browse files', ':Oil --float<CR>'),
@@ -1065,6 +1079,43 @@ require('lazy').setup({
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
       },
     },
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    config = function()
+      require('mason-lspconfig').setup {
+        ensure_installed = {
+          -- 'nil_ls',
+          'bashls',
+          'lua_ls',
+          'rust_analyzer',
+          'gopls',
+          'templ',
+          'html',
+          'cssls',
+          'emmet_language_server',
+          'htmx',
+          'tailwindcss',
+          'ts_ls',
+          -- "tsserver",
+          'pylsp',
+          'clangd',
+          'prismals',
+          'yamlls',
+          'jsonls',
+          'eslint',
+          -- "hls",
+          'zls',
+          'marksman',
+          'sqlls',
+          'wgsl_analyzer',
+          'texlab',
+          -- 'intelephense',
+          'nim_langserver',
+          'zls',
+        },
+      }
+    end,
   },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
