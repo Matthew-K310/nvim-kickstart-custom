@@ -139,14 +139,13 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  'xiyaowong/transparent.nvim',
-
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to force a plugin to be loaded.
   --
+  { 'xiyaowong/transparent.nvim', vim.keymap.set('n', '<leader>te', ':TransparentToggle<CR>') },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -257,40 +256,6 @@ require('lazy').setup({
       },
     },
   },
-  -- {
-  --   'mfussenegger/nvim-lint',
-  --   optional = true,
-  --   opts = {
-  --     linters = {
-  --       ['markdownlint-cli2'] = {
-  --         args = { '--config', '/home/matthewkennedy/.markdownlint-cli2.yaml', '--' },
-  --       },
-  --     },
-  --   },
-  -- },
-
-  -- No worky worky
-  -- {
-  --   'mfussenegger/nvim-lint',
-  --
-  --   opts = {
-  --     linters = {
-  --       -- This does nothing
-  --       markdown = {
-  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
-  --       },
-  --       -- This does nothing
-  --       markdownlint = {
-  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
-  --       },
-  --       -- This stops _all_ linting from running on markdown.
-  --       ['markdownlint-cli2'] = {
-  --         args = { '--config', '~/.markdownlint-cli2.yaml', '--' },
-  --       },
-  --     },
-  --   },
-  -- },
-
   -- Obsidian nvim
   {
     'epwalsh/obsidian.nvim',
@@ -316,7 +281,7 @@ require('lazy').setup({
       workspaces = {
         {
           name = 'personal',
-          path = '/Users/matthewkennedy/Obsidian Vault Local/Matthew Local Vault/remote/',
+          path = '~/Obsidian Vault Local/Matthew Local Vault/remote/',
         },
         -- {
         --   name = 'work',
@@ -389,8 +354,8 @@ require('lazy').setup({
     'stevearc/oil.nvim',
     opts = {},
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
-    -- vim.keymap.set('n', '<leader>N', ':Oil<CR>'),
-    vim.keymap.set('n', '<leader>N', ':lua require("oil").toggle_float()<CR>'),
+    vim.keymap.set('n', '<leader>n', ':Oil<CR>'),
+    -- vim.keymap.set('n', '<leader>n', ':lua require("oil").toggle_float()<CR>'),
     -- vim.keymap.set('n', '<C-n>', ':lua require("oil").toggle_float()<CR>'),
     -- vim.keymap.set('n', '<C-d>', '<C-d>zz'),
     -- vim.keymap.set('n', '<C-u>', '<C-u>zz'),
@@ -438,6 +403,7 @@ require('lazy').setup({
   },
   {
     'goolord/alpha-nvim',
+    vim.keymap.set('n', '<leader>A', ':Alpha<CR>'),
     dependencies = {
       'echasnovski/mini.icons',
     },
@@ -1137,7 +1103,7 @@ require('lazy').setup({
           'sqlls',
           'wgsl_analyzer',
           'texlab',
-          -- 'intelephense',
+          'intelephense',
           'nim_langserver',
           'zls',
         },
@@ -1162,35 +1128,6 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-      --  This function gets run when an LSP attaches to a particular buffer.
-      --    That is to say, every time a new file is opened that is associated with
-      --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-      --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
